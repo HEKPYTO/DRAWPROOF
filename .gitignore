@@ -1,0 +1,16 @@
+docs/
+*.md
+NOTICE
+CHANGELOG
+!README.md
+!**/README.md
+!LICENSE
+target/
+.trail/
+*.key
+.env
+/bundle.json
+/report.html
+/commitment.json
+/receipt-*.json
+/opencode.json
