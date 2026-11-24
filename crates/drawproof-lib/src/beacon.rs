@@ -1,4 +1,3 @@
-use std::io::Read;
 use std::time::{Duration, Instant};
 
 use drand::{Beacon, ChainInfo, UnixTime, VerifiedBeacon, Verifier, chains};
@@ -143,23 +142,18 @@ enum FetchError {
 const MAX_BEACON_BYTES: u64 = 64 * 1024;
 
 fn get(url: &str, timeout: Duration) -> std::result::Result<Vec<u8>, FetchError> {
-    let agent = ureq::AgentBuilder::new().timeout(timeout).build();
+    let agent: ureq::Agent = ureq::Agent::config_builder()
+        .timeout_global(Some(timeout))
+        .build()
+        .into();
     match agent.get(url).call() {
-        Ok(response) => {
-            let mut body = Vec::new();
-            response
-                .into_reader()
-                .take(MAX_BEACON_BYTES + 1)
-                .read_to_end(&mut body)
-                .map_err(|error| FetchError::Other(format!("read {url}: {error}")))?;
-            if body.len() as u64 > MAX_BEACON_BYTES {
-                return Err(FetchError::Other(format!(
-                    "{url}: response exceeds {MAX_BEACON_BYTES} bytes"
-                )));
-            }
-            Ok(body)
-        }
-        Err(ureq::Error::Status(code, _)) if code == 404 || code == 425 => {
+        Ok(mut response) => response
+            .body_mut()
+            .with_config()
+            .limit(MAX_BEACON_BYTES + 1)
+            .read_to_vec()
+            .map_err(|error| FetchError::Other(format!("read {url}: {error}"))),
+        Err(ureq::Error::StatusCode(code)) if code == 404 || code == 425 => {
             Err(FetchError::NotFound)
         }
         Err(error) => Err(FetchError::Other(format!("{url}: {error}"))),
