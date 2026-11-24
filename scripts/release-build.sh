@@ -24,7 +24,7 @@ export SOURCE_DATE_EPOCH=0
 export RUSTFLAGS=
 unset RUSTUP_TOOLCHAIN CARGO_ENCODED_RUSTFLAGS
 
-(cd "$build/src" && cargo build --release --locked)
+(cd "$build/src" && rustup toolchain install 1.100.0 --profile minimal && rustup run 1.100.0 cargo build --release --locked)
 
 cd "$build/target/release"
 if command -v sha256sum >/dev/null 2>&1; then
