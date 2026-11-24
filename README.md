@@ -150,6 +150,19 @@ policy, a release build, and a gitleaks secret scan with full history. The
 ignored test fetches a live quicknet beacon and runs on demand or on the nightly
 job.
 
+## Reproducible release build
+
+The release artifact is built from the tag at the fixed path
+`/tmp/drawproof-release` with fixed Cargo and rustup homes:
+
+```sh
+./scripts/release-build.sh v0.1.0
+```
+
+The script prints SHA-256 sums for `drawproof` and `drawproof-server`. Rebuild
+the same tag at that path to reproduce the hashes. See
+[`scripts/README.md`](scripts/README.md).
+
 ## Documentation
 
 - [`crates/drawproof/README.md`](crates/drawproof/README.md): CLI commands and modes.
@@ -157,6 +170,7 @@ job.
 - [`crates/drawproof-server/README.md`](crates/drawproof-server/README.md): receipt signer.
 - [`examples/README.md`](examples/README.md): manifest format and synthetic example.
 - [`fixtures/README.md`](fixtures/README.md): pinned quicknet beacon fixtures.
+- [`scripts/README.md`](scripts/README.md): fixed-path release build.
 
 ## License
 
