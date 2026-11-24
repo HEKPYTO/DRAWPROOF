@@ -46,6 +46,7 @@ delay is enforced by the protocol and by the verifier.
 ## Independent signers
 
 ```sh
+cargo install --path ../drawproof-server --locked
 drawproof commit --manifest ../examples/manifest.jsonl --k 3 --lead-rounds 10 --out commitment.json
 drawproof-server sign --key signer-a.key --commitment commitment.json --out receipt-a.json
 drawproof-server sign --key signer-b.key --commitment commitment.json --out receipt-b.json

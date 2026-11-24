@@ -2,6 +2,12 @@
 
 Minimal receipt signer for one independent party.
 
+## Install
+
+```sh
+cargo install --path . --locked
+```
+
 ## Sign a commitment
 
 ```sh

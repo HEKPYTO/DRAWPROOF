@@ -59,6 +59,7 @@ below. Without a policy, the bundle's keys and required count are self-declared.
 Use independent signers when the claim must survive the holder:
 
 ```sh
+cargo install --path crates/drawproof-server --locked
 drawproof keygen --name signer-a --out signer-a.key
 drawproof keygen --name signer-b --out signer-b.key
 drawproof commit --manifest examples/manifest.jsonl --k 3 --lead-rounds 10 --out commitment.json
